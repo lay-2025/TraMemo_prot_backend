@@ -46,4 +46,75 @@ DB_PASSWORD=password
 "http://localhost:8080/"　にてスタートページにアクセス可能に
 
 
+■`php artisan install:api`　の実行ログ
+
+```
+PS C:\Users\USER\Desktop\DockerProject\TraMemo_prot_backend\src> php artisan install:api
+./composer.json has been updated
+Running composer update laravel/sanctum
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 1 install, 0 updates, 0 removals
+  - Locking laravel/sanctum (v4.1.1)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 1 install, 0 updates, 0 removals
+  - Installing laravel/sanctum (v4.1.1): Extracting archive
+Generating optimized autoload files
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+
+   INFO  Discovering packages.
+
+  laravel/pail .................................................................................................. DONE
+  laravel/sail .................................................................................................. DONE
+  laravel/sanctum ............................................................................................... DONE
+  laravel/tinker ................................................................................................ DONE
+  nesbot/carbon ................................................................................................. DONE
+  nunomaduro/collision .......................................................................................... DONE
+  nunomaduro/termwind ........................................................................................... DONE
+
+79 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+> @php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+   INFO  No publishable resources for tag [laravel-assets].
+
+No security vulnerability advisories found.
+   INFO  Published API routes file.
+
+ One new database migration has been published. Would you like to run all pending database migrations? (yes/no) [yes]:
+ > yes
+
+
+   Illuminate\Database\QueryException
+
+  SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for db failed: そのようなホストは不明です。 (Connection: mysql, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+    818▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+    819▕                 );
+    820▕             }
+    821▕
+  ➜ 822▕             throw new QueryException(
+    823▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e
+    824▕             );
+    825▕         }
+    826▕     }
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+      PDOException::("PDO::connect(): php_network_getaddresses: getaddrinfo for db failed: そのようなホストは不明です。")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+      PDO::connect("mysql:host=db;port=3306;dbname=laravel", "user", Object(SensitiveParameterValue), [])
+
+PS C:\Users\USER\Desktop\DockerProject\TraMemo_prot_backend\src>
+```
+
+
+
+
+
+
+
 
