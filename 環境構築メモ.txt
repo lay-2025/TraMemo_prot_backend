@@ -1,0 +1,49 @@
+■Docker環境構築
+Laravel 12 + PHP 8.2 + Nginx + Dockerで開発環境構築 (2025年版)
+https://zenn.dev/idapan/articles/bd2a5ecfae255d
+
+上記を参考にDockerファイル関連を作成し各コンテナ立ち上げ
+docker compose up -d
+
+■Laravelインストール
+Laravelインストールのためにappサーバに入る
+docker compose exec app bash
+
+LaravelコマンドでLaravel12をインストール
+下記を参考に
+https://laravel.com/docs/12.x/installation
+
+/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
+
+composer global require laravel/installer
+
+
+変更するかもしれないが、スターターキットやWorkOSは使わずにインストール
+laravel new example-app
+
+none
+mysql
+
+Would you like to run npm install and npm run build? ────────┐
+ │ Yes
+
+example-appフォルダの中に作成されるが不要なので、中身を全てsrcフォルダへ移動
+
+ここで　http://localhost:8080/　にアクセスすると　Failed to open stream: Permission denied　が出るので権限付与
+chmod -R 777 ./storage/
+
+
+SQLSTATE[HY000] [2002] Connection refused　が出るので mysql > Docerfile のデータをenvに反映（env.exampleも同様に変更）
+その後、docker-compose restart　でコンテナ再起動
+
+DB_CONNECTION=mysql
+DB_HOST=db　⇒　コンテナ名
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=user
+DB_PASSWORD=password
+
+"http://localhost:8080/"　にてスタートページにアクセス可能に
+
+
+
