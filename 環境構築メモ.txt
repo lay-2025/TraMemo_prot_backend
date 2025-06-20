@@ -111,7 +111,10 @@ No security vulnerability advisories found.
 PS C:\Users\USER\Desktop\DockerProject\TraMemo_prot_backend\src>
 ```
 
-
+■マイグレーションでエラーが発生
+マイグレーションは app サーバ内で実行がデフォだった
+`docker compose exec app bash`
+※`.env`をいじるとローカルでもできたため余計に混乱した
 
 
 
