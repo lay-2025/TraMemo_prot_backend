@@ -1,11 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Infrastructure\Trip\Models;
 
+use App\Infrastructure\Auth\Models\User;
+use App\Infrastructure\Comment\Models\Comment;
+use App\Infrastructure\Favorite\Models\Favorite;
+use App\Infrastructure\Like\Models\Like;
+use App\Infrastructure\Photo\Models\Photo;
+use App\Infrastructure\Tag\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 class Trip extends Model
 {

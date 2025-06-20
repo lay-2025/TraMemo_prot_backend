@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Infrastructure\Auth\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Infrastructure\Comment\Models\Comment;
+use App\Infrastructure\Favorite\Models\Favorite;
+use App\Infrastructure\Like\Models\Like;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Infrastructure\Trip\Models\Trip;
+
 
 class User extends Authenticatable
 {

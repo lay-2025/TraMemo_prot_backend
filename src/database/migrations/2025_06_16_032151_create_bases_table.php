@@ -41,6 +41,7 @@ return new class extends Migration {
             $table->string('name');
             $table->double('latitude');
             $table->double('longitude');
+            // 順番（ルート表示用）
             $table->integer('order_index')->nullable();
             $table->text('memo')->nullable();
             $table->timestamps();
