@@ -5,13 +5,13 @@ namespace App\Infrastructure\Comment\Models;
 use App\Infrastructure\Auth\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Infrastructure\Trip\Models\Trip;
+use App\Infrastructure\Travel\Models\Travel;
 
 class Comment extends Model
 {
     protected $fillable = [
         'user_id',
-        'trip_id',
+        'travel_id',
         'content',
     ];
 
@@ -20,8 +20,8 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function trip(): BelongsTo
+    public function travel(): BelongsTo
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(Travel::class);
     }
 }

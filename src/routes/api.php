@@ -28,4 +28,4 @@ Route::get('/list', function () {
     );
 });
 
-Route::get('/travels/{id}', [\App\Http\Controllers\Api\TripController::class, 'show']);
+Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 'show']);

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Trip\Entities;
+namespace App\Domain\Travel\Entities;
 
-class Trip
+class Travel
 {
     public function __construct(
         public int $id,
@@ -11,7 +11,7 @@ class Trip
         public ?string $description,
         public ?string $startDate,
         public ?string $endDate,
-        public array $tripSpots = [],
+        public array $travelSpots = [],
         public array $photos = [],
         public array $tags = [],
         public array $user = [],

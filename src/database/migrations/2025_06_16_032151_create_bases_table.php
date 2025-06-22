@@ -20,8 +20,8 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // Trips
-        Schema::create('trips', function (Blueprint $table) {
+        // Travels
+        Schema::create('travels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
@@ -31,10 +31,12 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // Trip Spots
-        Schema::create('trip_spots', function (Blueprint $table) {
+        // Travel Spots
+        Schema::create('travel_spots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('travel_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
             $table->integer('day_number')->nullable();
             $table->date('visit_date')->nullable();
             $table->time('visit_time')->nullable();
@@ -50,8 +52,10 @@ return new class extends Migration {
         // Photos
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trip_spot_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
+            $table->unsignedBigInteger('travel_spot_id');
+            $table->foreign('travel_spot_id')->references('id')->on('travel_spots')->onDelete('cascade');
             $table->text('url');
             $table->text('thumbnail_url')->nullable();
             $table->text('caption')->nullable();
@@ -65,18 +69,20 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // Trip_Tag (pivot)
-        Schema::create('trip_tag', function (Blueprint $table) {
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+        // Travel_Tag (pivot)
+        Schema::create('travel_tag', function (Blueprint $table) {
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
             $table->foreignId('tag_id')->constrained()->onDelete('cascade');
-            $table->primary(['trip_id', 'tag_id']);
+            $table->primary(['travel_id', 'tag_id']);
         });
 
         // Likes
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -84,7 +90,8 @@ return new class extends Migration {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -92,7 +99,8 @@ return new class extends Migration {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('travel_id');
+            $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
         });
@@ -103,11 +111,11 @@ return new class extends Migration {
         Schema::dropIfExists('comments');
         Schema::dropIfExists('favorites');
         Schema::dropIfExists('likes');
-        Schema::dropIfExists('trip_tag');
+        Schema::dropIfExists('travel_tag');
         Schema::dropIfExists('tags');
         Schema::dropIfExists('photos');
-        Schema::dropIfExists('trip_spots');
-        Schema::dropIfExists('trips');
+        Schema::dropIfExists('travel_spots');
+        Schema::dropIfExists('travels');
         Schema::dropIfExists('users');
     }
 };

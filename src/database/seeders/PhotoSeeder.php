@@ -16,8 +16,8 @@ class PhotoSeeder extends Seeder
     {
         DB::table('photos')->insert([
             [
-                'trip_id' => 1,
-                'trip_spot_id' => 1,
+                'travel_id' => 1,
+                'travel_spot_id' => 1,
                 'url' => 'https://example.com/photo1.jpg',
                 'thumbnail_url' => 'https://example.com/thumb1.jpg',
                 'caption' => '京都駅到着',

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Infrastructure\Trip\Models\Trip;
+use App\Infrastructure\Travel\Models\Travel;
 
 
 class User extends Authenticatable
@@ -68,9 +68,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function trips(): HasMany
+    public function travels(): HasMany
     {
-        return $this->hasMany(Trip::class);
+        return $this->hasMany(Travel::class);
     }
 
     public function likes(): HasMany

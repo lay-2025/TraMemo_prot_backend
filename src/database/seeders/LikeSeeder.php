@@ -15,7 +15,7 @@ class LikeSeeder extends Seeder
     public function run(): void
     {
         DB::table('likes')->insert([
-            ['user_id' => 2, 'trip_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['user_id' => 2, 'travel_id' => 1, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Infrastructure\Tag\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Infrastructure\Trip\Models\Trip;
+use App\Infrastructure\Travel\Models\Travel;
 
 class Tag extends Model
 {
@@ -14,8 +14,8 @@ class Tag extends Model
         'name',
     ];
 
-    public function trips(): BelongsToMany
+    public function travels(): BelongsToMany
     {
-        return $this->belongsToMany(Trip::class, 'trip_tag');
+        return $this->belongsToMany(Travel::class, 'travel_tag');
     }
 }

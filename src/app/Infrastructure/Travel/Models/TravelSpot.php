@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Trip\Models;
+namespace App\Infrastructure\Travel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TripSpot extends Model
+class TravelSpot extends Model
 {
     protected $fillable = [
-        'trip_id',
+        'travel_id',
         'day_number',
         'visit_date',
         'visit_time',
@@ -19,8 +19,8 @@ class TripSpot extends Model
         'memo',
     ];
 
-    public function trip(): BelongsTo
+    public function travel(): BelongsTo
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(Travel::class);
     }
 }

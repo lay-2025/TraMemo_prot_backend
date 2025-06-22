@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Trip\Models;
+namespace App\Infrastructure\Travel\Models;
 
 use App\Infrastructure\Auth\Models\User;
 use App\Infrastructure\Comment\Models\Comment;
@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
-class Trip extends Model
+class Travel extends Model
 {
-    protected $table = 'trips';
+    protected $table = 'travels';
 
     protected $fillable = [
         'user_id',
@@ -31,9 +31,9 @@ class Trip extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tripSpots(): HasMany
+    public function travelSpots(): HasMany
     {
-        return $this->hasMany(TripSpot::class);
+        return $this->hasMany(TravelSpot::class);
     }
 
     public function photos(): HasMany
@@ -43,7 +43,7 @@ class Trip extends Model
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'trip_tag');
+        return $this->belongsToMany(Tag::class, 'travel_tag');
     }
 
     public function likes(): HasMany

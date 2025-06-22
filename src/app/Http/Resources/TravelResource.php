@@ -12,8 +12,8 @@ class TravelResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             // 現在Locationに関する情報は取得できないためデータベースから検討
-            // 'location'    => optional($this->tripSpots->first())->name ?? '',
-            'location'    => isset($this->tripSpots[0]) ? ($this->tripSpots[0]['name'] ?? '') : '',
+            // 'location'    => optional($this->travelSpots->first())->name ?? '',
+            'location'    => isset($this->travelSpots[0]) ? ($this->travelSpots[0]['name'] ?? '') : '',
             'date'        => $this->startDate . ' - ' . $this->endDate,
             'duration'    => $this->getDurationText($this->startDate, $this->endDate),
             'images'      => collect($this->photos)->pluck('file_path')->all(),
@@ -27,7 +27,7 @@ class TravelResource extends JsonResource
             'commentCount' => collect($this->comments)->count(),
             'tags'         => collect($this->tags)->pluck('name')->all(),
             // 訪問地にあたる情報の持ち方、出し方は検討
-            'locations'    => collect($this->tripSpots)->map(function ($spot) {
+            'locations'    => collect($this->travelSpots)->map(function ($spot) {
                 return [
                     'name'        => $spot['name'] ?? '',
                     'lat'         => $spot['latitude'] ?? '',
@@ -35,7 +35,7 @@ class TravelResource extends JsonResource
                     'description' => $spot['memo'] ?? '',
                 ];
             })->all(),
-            'itinerary' => $this->formatItinerary(collect($this->tripSpots)),
+            'itinerary' => $this->formatItinerary(collect($this->travelSpots)),
             'comments'  => collect($this->comments)->map(function ($comment) {
                 return [
                     'id'      => $comment['id'] ?? null,

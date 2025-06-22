@@ -7,17 +7,17 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class TripSpotSeeder extends Seeder
+class TravelSpotSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('trip_spots')->insert([
+        DB::table('travel_spots')->insert([
             // Day 1
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 1,
                 'visit_date' => '2023-10-15',
                 'visit_time' => '10:00:00',
@@ -30,7 +30,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 1,
                 'visit_date' => '2023-10-15',
                 'visit_time' => '11:30:00',
@@ -43,7 +43,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 1,
                 'visit_date' => '2023-10-15',
                 'visit_time' => '14:00:00',
@@ -56,7 +56,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 1,
                 'visit_date' => '2023-10-15',
                 'visit_time' => '17:00:00',
@@ -70,7 +70,7 @@ class TripSpotSeeder extends Seeder
             ],
             // Day 2
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 2,
                 'visit_date' => '2023-10-16',
                 'visit_time' => '09:00:00',
@@ -83,7 +83,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 2,
                 'visit_date' => '2023-10-16',
                 'visit_time' => '13:00:00',
@@ -96,7 +96,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 2,
                 'visit_date' => '2023-10-16',
                 'visit_time' => '15:30:00',
@@ -109,7 +109,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 2,
                 'visit_date' => '2023-10-16',
                 'visit_time' => '18:00:00',
@@ -123,7 +123,7 @@ class TripSpotSeeder extends Seeder
             ],
             // Day 3
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 3,
                 'visit_date' => '2023-10-17',
                 'visit_time' => '08:30:00',
@@ -136,7 +136,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 3,
                 'visit_date' => '2023-10-17',
                 'visit_time' => '11:00:00',
@@ -149,7 +149,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 3,
                 'visit_date' => '2023-10-17',
                 'visit_time' => '14:00:00',
@@ -162,7 +162,7 @@ class TripSpotSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'trip_id' => 1,
+                'travel_id' => 1,
                 'day_number' => 3,
                 'visit_date' => '2023-10-17',
                 'visit_time' => '17:30:00',

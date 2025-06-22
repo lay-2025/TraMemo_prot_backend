@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            TripSeeder::class,
-            TripSpotSeeder::class,
+            TravelSeeder::class,
+            TravelSpotSeeder::class,
             PhotoSeeder::class,
             TagSeeder::class,
-            TripTagSeeder::class,
+            TravelTagSeeder::class,
             LikeSeeder::class,
             FavoriteSeeder::class,
             CommentSeeder::class,

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Domain\Trip\Repositories\TripRepositoryInterface;
-use App\Infrastructure\Trip\Repositories\TripRepository;
+use App\Domain\Travel\Repositories\TravelRepositoryInterface;
+use App\Infrastructure\Travel\Repositories\TravelRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(TripRepositoryInterface::class, TripRepository::class);
+        $this->app->bind(TravelRepositoryInterface::class, TravelRepository::class);
     }
 
     /**

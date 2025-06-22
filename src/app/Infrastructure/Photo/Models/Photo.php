@@ -4,26 +4,26 @@ namespace App\Infrastructure\Photo\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Infrastructure\Trip\Models\Trip;
-use App\Infrastructure\Trip\Models\TripSpot;
+use App\Infrastructure\Travel\Models\Travel;
+use App\Infrastructure\Travel\Models\TravelSpot;
 
 class Photo extends Model
 {
     protected $fillable = [
-        'trip_id',
-        'trip_spot_id',
+        'travel_id',
+        'travel_spot_id',
         'url',
         'thumbnail_url',
         'caption',
     ];
 
-    public function trip(): BelongsTo
+    public function travel(): BelongsTo
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(Travel::class);
     }
 
-    public function tripSpot(): BelongsTo
+    public function travelSpot(): BelongsTo
     {
-        return $this->belongsTo(TripSpot::class);
+        return $this->belongsTo(TravelSpot::class);
     }
 }
