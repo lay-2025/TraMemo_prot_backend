@@ -41,3 +41,6 @@ Route::middleware(['clerk.auth'])->group(function () {
 
 Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 'show']);
 // Route::post('/travels/create', [\App\Http\Controllers\Api\TravelController::class, 'store']);
+
+// webhook
+Route::post('/webhook/clerk', [\App\Http\Controllers\Api\WebhookController::class, 'handleClerk']);
