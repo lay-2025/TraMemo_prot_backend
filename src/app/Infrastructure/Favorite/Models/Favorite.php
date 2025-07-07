@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Favorite\Models;
 
-use App\Infrastructure\Auth\Models\User;
+use App\Infrastructure\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Infrastructure\Travel\Models\Travel;
