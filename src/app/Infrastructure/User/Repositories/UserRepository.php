@@ -19,4 +19,20 @@ class UserRepository implements UserRepositoryInterface
             ]
         );
     }
+
+    public function findByClerkUserId(string $clerkUserId): ?UserEntity
+    {
+        $user = User::where('provider_id', $clerkUserId)->first();
+        if (!$user) {
+            return null;
+        }
+        return new UserEntity(
+            $user->id,
+            $user->name,
+            $user->email,
+            $user->provider,
+            $user->provider_id,
+            $user->bio,
+        );
+    }
 }

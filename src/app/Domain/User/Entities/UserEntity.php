@@ -4,19 +4,27 @@ namespace App\Domain\User\Entities;
 
 class UserEntity
 {
-    public string $provider = 'clerk';
-    public string $providerId;
-    public ?string $email;
+    public int $id;
     public string $name;
+    public ?string $email;
+    public string $provider;
+    public string $providerId;
+    public string $bio;
 
     public function __construct(
-        string $providerId,
+        int $id,
+        string $name,
         ?string $email,
-        string $name
+        string $provider,
+        string $providerId,
+        string $bio
     ) {
-        $this->providerId = $providerId;
-        $this->email = $email;
+        $this->id = $id;
         $this->name = $name;
+        $this->email = $email;
+        $this->provider = $provider;
+        $this->providerId = $providerId;
+        $this->bio = $bio;
     }
 
     /**
@@ -31,9 +39,12 @@ class UserEntity
             $name = trim(($userData['first_name'] ?? '') . ' ' . ($userData['last_name'] ?? ''));
         }
         return new self(
-            $userData['id'],
+            0, // IDは0で初期化（後でDBに保存時に設定される）
+            $name,
             $userData['email_addresses'][0]['email_address'] ?? null,
-            $name
+            'clerk',
+            $userData['id'],
+            ''
         );
     }
 }
