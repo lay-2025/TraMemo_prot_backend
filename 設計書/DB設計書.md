@@ -1,0 +1,137 @@
+# データベース設計書
+
+## users テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | ユーザーID（主キー）              |
+| name         | VARCHAR    | NOT NULL               | ユーザー名                        |
+| email        | VARCHAR    | UNIQUE, NOT NULL       | メールアドレス                    |
+| password     | VARCHAR    | NULLABLE               | パスワード（外部認証時はNULL可）  |
+| provider     | VARCHAR    | NULLABLE               | 外部認証プロバイダ名              |
+| provider_id  | VARCHAR    | NULLABLE               | 外部認証プロバイダID              |
+| avatar_url   | TEXT       | NULLABLE               | アバター画像URL                   |
+| bio          | TEXT       | NULLABLE               | 自己紹介                          |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## travels テーブル
+
+| カラム名         | 型       | 制約                   | 概要                                         |
+|:----------------|:---------|:-----------------------|:---------------------------------------------|
+| id              | BIGINT   | PK, AUTO INCREMENT     | 旅行ID（主キー）                             |
+| user_id         | BIGINT   | FK(users.id), NOT NULL | 投稿ユーザーID                               |
+| title           | VARCHAR  | NOT NULL               | 旅行タイトル                                 |
+| description     | TEXT     | NULLABLE               | 旅行説明                                     |
+| start_date      | DATE     | NULLABLE               | 開始日                                       |
+| end_date        | DATE     | NULLABLE               | 終了日                                       |
+| visibility      | INT      | NOT NULL               | 公開設定（0：private、1：public）            |
+| locationCategory| INT      | NOT NULL               | 場所カテゴリ（0：日本国内、1：海外）         |
+| prefecture      | INT      | NULLABLE               | 都道府県No（例：1=北海道、2=青森県...）      |
+| country         | INT      | NULLABLE               | 国No（例：1=アメリカ合衆国、2=ドイツ...）    |
+| created_at      | TIMESTAMP|                        | 作成日時                                     |
+| updated_at      | TIMESTAMP|                        | 更新日時                                     |
+
+---
+
+## travel_spots テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | スポットID（主キー）              |
+| travel_id    | BIGINT     | FK(travels.id), NOT NULL | 旅行ID                          |
+| day_number   | INT        | NULLABLE               | 旅行何日目か                      |
+| visit_date   | DATE       | NULLABLE               | 訪問日                            |
+| visit_time   | TIME       | NULLABLE               | 訪問時刻                          |
+| name         | VARCHAR    | NOT NULL               | スポット名                        |
+| latitude     | DOUBLE     | NULLABLE               | 緯度                              |
+| longitude    | DOUBLE     | NULLABLE               | 経度                              |
+| order_index  | INT        | NULLABLE               | 表示順（ルート用）                |
+| memo        | TEXT       | NULLABLE               | メモ                              |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## photos テーブル
+
+| カラム名        | 型         | 制約                   | 概要                              |
+|:---------------|:-----------|:-----------------------|:----------------------------------|
+| id             | BIGINT     | PK, AUTO INCREMENT     | 写真ID（主キー）                  |
+| travel_id      | BIGINT     | FK(travels.id), NOT NULL | 旅行ID                          |
+| travel_spot_id | BIGINT     | FK(travel_spots.id), NOT NULL | スポットID                  |
+| url            | TEXT       | NOT NULL               | 写真URL                           |
+| thumbnail_url  | TEXT       | NULLABLE               | サムネイルURL                     |
+| caption        | TEXT       | NULLABLE               | キャプション                      |
+| created_at     | TIMESTAMP  |                        | 作成日時                          |
+| updated_at     | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## tags テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | タグID（主キー）                  |
+| name         | VARCHAR    | UNIQUE, NOT NULL       | タグ名                            |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## travel_tag テーブル（中間テーブル）
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| travel_id    | BIGINT     | FK(travels.id), PK     | 旅行ID                            |
+| tag_id       | BIGINT     | FK(tags.id), PK        | タグID                            |
+
+---
+
+## likes テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | いいねID（主キー）                |
+| user_id      | BIGINT     | FK(users.id), NOT NULL | ユーザーID                        |
+| travel_id    | BIGINT     | FK(travels.id), NOT NULL | 旅行ID                          |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## favorites テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | お気に入りID（主キー）            |
+| user_id      | BIGINT     | FK(users.id), NOT NULL | ユーザーID                        |
+| travel_id    | BIGINT     | FK(travels.id), NOT NULL | 旅行ID                          |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+## comments テーブル
+
+| カラム名      | 型         | 制約                   | 概要                              |
+|:-------------|:-----------|:-----------------------|:----------------------------------|
+| id           | BIGINT     | PK, AUTO INCREMENT     | コメントID（主キー）              |
+| user_id      | BIGINT     | FK(users.id), NOT NULL | ユーザーID                        |
+| travel_id    | BIGINT     | FK(travels.id), NOT NULL | 旅行ID                          |
+| content      | TEXT       | NOT NULL               | コメント内容                      |
+| created_at   | TIMESTAMP  |                        | 作成日時                          |
+| updated_at   | TIMESTAMP  |                        | 更新日時                          |
+
+---
+
+### 備考
+- 各テーブルの `created_at`、`updated_at` はLaravelのタイムスタンプ自動管理カラムです。
+- 外部キー制約（FK）は、関連テーブルのIDに対して設定されています。
+- travel_tagは多対多リレーション用の中間テーブルです。
+
+---
+
+ご要望に応じて、ER図やリレーション図も作成可能です。 
