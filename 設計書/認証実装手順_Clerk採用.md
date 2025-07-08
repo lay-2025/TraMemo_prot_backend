@@ -93,4 +93,131 @@
 
 ---
 
+## 6. authorizedParties に入れるべきデータについて
+
+### authorizedParties とは
+
+`authorizedParties` は、Clerkの認証トークン（JWT）の `azp`（Authorized Party）クレームと一致する値を指定するための設定です。  
+これは「どのクライアント（アプリケーション）がこのトークンを使うことを許可されているか」を示します。
+
+### 何を入れるべきか
+
+- 通常は **フロントエンドのURL** や **ClerkのクライアントID** を指定します。
+- Clerkが発行するトークンの `azp` クレーム値と一致させる必要があります。
+
+#### 例1: ローカル開発環境の場合
+
+```php
+authorizedParties: ['http://localhost:3000']
+```
+
+#### 例2: 本番環境の場合
+
+```php
+authorizedParties: ['https://your-production-domain.com']
+```
+
+#### 例3: ClerkのクライアントIDを指定する場合
+
+```php
+authorizedParties: ['clerk.apps.xxxxx']
+```
+※ ClerkのクライアントIDはClerkダッシュボードで確認できます。
+
+### どの値を指定すればよいか分からない場合
+
+1. フロントエンドで取得したJWT（セッショントークン）を[JWTデコーダー](https://jwt.io/)などでデコードし、`azp` クレームの値を確認してください。
+2. その値を `authorizedParties` に指定してください。
+
+---
+
+**まとめ**  
+- `authorizedParties` には、トークンの `azp` クレーム値と一致する値を指定します。
+- 通常はフロントエンドのURLやクライアントIDです。
+- ローカル・本番で値が異なる場合があるので、環境ごとに設定を切り替えてください。
+
+---
+
+## 7. Clerk Webhookを利用したユーザーデータのDB登録（ローカル環境例）
+
+### 概要
+
+ClerkのWebhook機能を使うことで、フロントエンドでユーザー登録が行われた際に、  
+LaravelバックエンドのDBへユーザーデータを自動登録できます。
+
+---
+
+### 1. LaravelでWebhook受信用エンドポイントを作成
+
+#### ルート追加
+
+```php
+// routes/api.php
+Route::post('/webhook/clerk', [\App\Http\Controllers\WebhookController::class, 'handleClerk']);
+```
+
+#### コントローラ作成例
+
+```php
+// app/Http/Controllers/WebhookController.php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+
+class WebhookController extends Controller
+{
+    public function handleClerk(Request $request)
+    {
+        $payload = $request->all();
+
+        // Clerkのユーザー作成イベント
+        if (($payload['type'] ?? '') === 'user.created') {
+            $userData = $payload['data'];
+            User::updateOrCreate(
+                ['clerk_user_id' => $userData['id']],
+                [
+                    'email' => $userData['email_addresses'][0]['email_address'] ?? null,
+                    'name' => $userData['first_name'] ?? '',
+                    // 必要に応じて他の項目も
+                ]
+            );
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
+}
+```
+
+---
+
+### 2. ClerkダッシュボードでWebhook URLを設定
+
+- ローカル開発の場合は [ngrok](https://ngrok.com/) などで一時的に外部公開し、  
+  例: `https://xxxx.ngrok.io/api/webhook/clerk` をClerkのWebhook設定画面に登録します。
+
+---
+
+### 3. セキュリティ対策（推奨）
+
+- ClerkのWebhook署名検証を実装し、不正リクエストを防ぐ  
+  [Clerk公式Webhook署名検証ガイド](https://clerk.com/docs/webhooks/verify-signature) を参照
+
+---
+
+### 4. 動作確認
+
+1. フロントエンドで新規ユーザー登録を実施
+2. ClerkからWebhookが送信され、Laravelのエンドポイントが呼ばれる
+3. usersテーブルに新しいユーザーが登録されていることを確認
+
+---
+
+**ポイント**
+- ClerkのWebhookは「user.created」などのイベントごとに送信されます。
+- ローカル開発時はngrok等で一時的に外部公開する必要があります。
+- 本番環境ではHTTPSのエンドポイントを直接指定してください。
+
+---
+
 以上

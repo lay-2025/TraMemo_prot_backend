@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Travel\Models;
 
-use App\Infrastructure\Auth\Models\User;
+use App\Infrastructure\User\Models\User;
 use App\Infrastructure\Comment\Models\Comment;
 use App\Infrastructure\Favorite\Models\Favorite;
 use App\Infrastructure\Like\Models\Like;

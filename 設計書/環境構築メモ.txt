@@ -117,6 +117,12 @@ PS C:\Users\USER\Desktop\DockerProject\TraMemo_prot_backend\src>
 ※`.env`をいじるとローカルでもできたため余計に混乱した
 
 
+■ClerkのWebhook認証
+下記を参考に
+How to Verify Webhooks with the Svix Libraries | Svix Docs
+https://docs.svix.com/receiving/verifying-payloads/how#php-laravel
+
+SvixSDKを利用
 
 
 

@@ -8,7 +8,9 @@ use App\Infrastructure\Travel\Repositories\TravelRepository;
 use App\Domain\Photo\Repositories\PhotoRepositoryInterface;
 use App\Infrastructure\Photo\Repositories\PhotoRepository;
 use App\Domain\Tag\Repositories\TagRepositoryInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Tag\Repositories\TagRepository;
+use App\Infrastructure\User\Repositories\UserRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TravelRepositoryInterface::class, TravelRepository::class);
         $this->app->bind(PhotoRepositoryInterface::class, PhotoRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**

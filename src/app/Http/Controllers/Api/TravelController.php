@@ -6,10 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Application\Travel\UseCases\CreateTravelUseCase;
 use App\Application\Travel\UseCases\GetTravelDetailUseCase;
+use App\Application\User\Services\AuthenticatedUserService;
 use App\Http\Resources\TravelResource;
 
 class TravelController extends Controller
 {
+
+    private AuthenticatedUserService $authenticatedUserService;
+
+    public function __construct(AuthenticatedUserService $authenticatedUserService)
+    {
+        $this->authenticatedUserService = $authenticatedUserService;
+    }
+
     public function show($id, GetTravelDetailUseCase $useCase)
     {
         $travel = $useCase->handle((int)$id);
@@ -46,7 +55,13 @@ class TravelController extends Controller
             'images.*' => 'string|max:1024',
         ]);
 
-        $userId = $request->user()->id ?? 1; // 認証していない場合は仮で1
+        // ユーザーIDを取得
+        $user = $this->authenticatedUserService->getUserFromRequest($request);
+        if (!$user) {
+            // ユーザ認証はされているが、ユーザ情報がDBに存在しない場合
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $userId = $user->id;
 
         try {
             $travel = $useCase->handle($userId, $validated);
