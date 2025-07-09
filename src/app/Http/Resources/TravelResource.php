@@ -94,7 +94,8 @@ class TravelResource extends JsonResource
                 'activities' => $daySpots->map(function ($spot) {
                     return [
                         'time' => $spot['visit_time'] ?? '',
-                        'description' => $spot['name'] ?? '',
+                        'name' => $spot['name'] ?? '',
+                        'description' => $spot['memo'] ?? '',
                     ];
                 })->all(),
             ];

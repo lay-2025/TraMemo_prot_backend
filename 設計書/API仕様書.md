@@ -173,10 +173,28 @@ GET /api/travels/{id}
         "itinerary": [
             {
                 "day": 1,
-                "spots": [
+                "date": "2024-10-15",
+                "activities": [
                     {
+                        "time": "10:00",
                         "name": "京都駅到着",
-                        "time": "10:00"
+                        "description": "集合場所"
+                    },
+                    {
+                        "time": "14:00",
+                        "name": "金閣寺",
+                        "description": "世界遺産の寺院"
+                    }
+                ]
+            },
+            {
+                "day": 2,
+                "date": "2024-10-16",
+                "activities": [
+                    {
+                        "time": "09:00",
+                        "name": "清水寺",
+                        "description": "朝の散策"
                     }
                 ]
             }
@@ -391,6 +409,20 @@ POST /api/webhook/clerk
 | lat | float | ○ | 緯度 |
 | lng | float | ○ | 経度 |
 | description | string | × | 説明・メモ |
+
+#### itinerary
+| フィールド    | 型      | 必須 | 説明                       |
+|--------------|---------|------|----------------------------|
+| day          | integer | ○    | 旅行何日目か               |
+| date         | string  | ×    | 日付（YYYY-MM-DD）         |
+| activities   | array   | ○    | その日のスポット配列       |
+
+##### activities配列の要素
+| フィールド    | 型      | 必須 | 説明                       |
+|--------------|---------|------|----------------------------|
+| time         | string  | ×    | 訪問時刻（HH:MM）          |
+| name         | string  | ○    | スポット名                 |
+| description  | string  | ×    | スポットの説明・メモ       |
 
 ---
 
