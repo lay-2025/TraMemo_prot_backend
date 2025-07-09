@@ -166,7 +166,8 @@ GET /api/travels/{id}
                 "name": "京都駅到着",
                 "lat": 34.985849,
                 "lng": 135.758766,
-                "description": "みんなでここに集合"
+                "description": "みんなでここに集合",
+                "orderIndex": 1
             }
         ],
         "itinerary": [
