@@ -51,6 +51,18 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id' => 4,
+                'name' => '検証 検証',
+                'email' => 'kensyo@example.com',
+                'password' => Hash::make('password'),
+                'provider' => 'clerk',
+                'provider_id' => 'clerk_id',
+                'avatar_url' => 'https://example.com/avatar.jpg',
+                'bio' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

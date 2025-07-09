@@ -24,6 +24,10 @@ class Travel extends Model
         'description',
         'start_date',
         'end_date',
+        'visibility',
+        'location_category',
+        'prefecture',
+        'country',
     ];
 
     public function user(): BelongsTo

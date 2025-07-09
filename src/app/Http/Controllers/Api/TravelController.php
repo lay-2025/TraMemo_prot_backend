@@ -24,7 +24,10 @@ class TravelController extends Controller
         $travel = $useCase->handle((int)$id);
 
         if (!$travel) {
-            return response()->json(['message' => 'Not Found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Not Found'
+            ], 404);
         }
 
         return new TravelResource($travel);
@@ -39,27 +42,32 @@ class TravelController extends Controller
             'description' => 'nullable|string',
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
-            'prefecture' => 'nullable|string|max:255',
-            'visibility' => 'nullable|string|max:50',
+            'visibility' => 'required|integer',
+            'locationCategory' => 'nullable|integer',
+            'prefecture' => 'nullable|integer',
+            'country' => 'nullable|integer',
             'tags' => 'array',
-            'tags.*' => 'string|max:50',
+            'tags.*' => 'string',
             'locations' => 'array',
-            'locations.*.order' => 'required|numeric',
+            'locations.*.order' => 'required|integer',
             'locations.*.name' => 'required|string|max:255',
-            'locations.*.lat' => 'required|numeric',
-            'locations.*.lng' => 'required|numeric',
+            'locations.*.lat' => 'nullable|numeric',
+            'locations.*.lng' => 'nullable|numeric',
             'locations.*.description' => 'nullable|string',
-            'locations.*.visitDate' => 'nullable|date',
+            'locations.*.visitDate' => 'required|date',
             'locations.*.visitTime' => 'nullable|string',
             'images' => 'array',
-            'images.*' => 'string|max:1024',
+            'images.*' => 'string',
         ]);
 
         // ユーザーIDを取得
         $user = $this->authenticatedUserService->getUserFromRequest($request);
         if (!$user) {
             // ユーザ認証はされているが、ユーザ情報がDBに存在しない場合
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
         $userId = $user->id;
 
@@ -67,11 +75,13 @@ class TravelController extends Controller
             $travel = $useCase->handle($userId, $validated);
 
             return response()->json([
+                'success' => true,
                 'message' => 'Travel created successfully',
                 'data' => $travel->load(['travelSpots', 'photos', 'tags']),
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
+                'success' => false,
                 'message' => 'Travel creation failed',
                 'error' => $e->getMessage(),
             ], 500);

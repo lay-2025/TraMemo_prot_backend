@@ -2,7 +2,7 @@
 
 namespace App\Domain\Travel\Entities;
 
-class Travel
+class TravelEntity
 {
     public function __construct(
         public int $id,
@@ -11,6 +11,10 @@ class Travel
         public ?string $description,
         public ?string $startDate,
         public ?string $endDate,
+        public int $visibility,
+        public int $locationCategory,
+        public ?int $prefecture,
+        public ?int $country,
         public array $travelSpots = [],
         public array $photos = [],
         public array $tags = [],
