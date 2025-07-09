@@ -191,16 +191,24 @@ POST /api/travels
 
 **認証**: 必須
 
-**リクエストボディ**:
+**概要**: 新しい旅行記録を作成します。旅行の基本情報、スポット情報、タグ、画像を登録できます。
+
+---
+
+### リクエスト
+
+#### リクエストボディ例
 ```json
 {
-    "title": "旅行タイトル",
-    "description": "旅行の説明（任意）",
+    "title": "京都の古都を巡る旅",
+    "description": "京都の伝統的な寺院や庭園を訪れる旅",
     "startDate": "2024-10-15",
     "endDate": "2024-10-20",
-    "prefecture": "京都府",
-    "visibility": "public",
-    "tags": ["京都", "紅葉"],
+    "visibility": 1,
+    "location_category": 0,
+    "prefecture": 26,
+    "country": null,
+    "tags": ["京都", "紅葉", "寺院"],
     "locations": [
         {
             "order": 1,
@@ -210,51 +218,142 @@ POST /api/travels
             "description": "集合場所",
             "visitDate": "2024-10-15",
             "visitTime": "10:00"
+        },
+        {
+            "order": 2,
+            "name": "金閣寺",
+            "lat": 35.039370,
+            "lng": 135.729243,
+            "description": "世界遺産の寺院",
+            "visitDate": "2024-10-15",
+            "visitTime": "14:00"
         }
     ],
-    "images": ["https://example.com/photo1.jpg"]
+    "images": [
+        "https://example.com/photo1.jpg",
+        "https://example.com/photo2.jpg"
+    ]
 }
 ```
 
-**リクエストパラメータ**:
-| パラメータ | 型 | 必須 | 説明 |
-|-----------|----|------|------|
-| title | string | ○ | 旅行タイトル（最大255文字） |
-| description | string | × | 旅行の説明 |
-| startDate | string | ○ | 開始日（YYYY-MM-DD） |
-| endDate | string | ○ | 終了日（YYYY-MM-DD、開始日以降） |
-| prefecture | string | × | 都道府県名（最大255文字） |
-| visibility | string | × | 公開設定（public/private） |
-| tags | array | × | タグ一覧（文字列配列） |
-| locations | array | × | スポット情報の配列 |
-| images | array | × | 画像URLの配列 |
+#### 基本パラメータ
+| パラメータ | 型 | 必須 | 説明 | 例 |
+|-----------|----|------|------|-----|
+| title | string | ○ | 旅行タイトル（最大255文字） | "京都の古都を巡る旅" |
+| description | string | × | 旅行の説明 | "京都の伝統的な寺院や庭園を訪れる旅" |
+| startDate | string | ○ | 開始日（YYYY-MM-DD） | "2024-10-15" |
+| endDate | string | ○ | 終了日（YYYY-MM-DD、開始日以降） | "2024-10-20" |
+| visibility | integer | ○ | 公開設定（0：private、1：public） | 1 |
+| location_category | integer | × | 場所カテゴリ（0：日本国内、1：海外） | 0 |
+| prefecture | integer | × | 都道府県No（定数ファイルに従う） | 26（京都府） |
+| country | integer | × | 国No（定数ファイルに従う） | null |
+| tags | array | × | タグ一覧（文字列配列） | ["京都", "紅葉"] |
+| locations | array | ○ | スポット情報の配列 | 下記参照 |
+| images | array | × | 画像URLの配列 | ["https://example.com/photo1.jpg"] |
 
-**locations配列の要素**:
-| パラメータ | 型 | 必須 | 説明 |
-|-----------|----|------|------|
-| order | integer | ○ | スポットの表示順 |
-| name | string | ○ | スポット名（最大255文字） |
-| lat | float | ○ | 緯度 |
-| lng | float | ○ | 経度 |
-| description | string | × | スポットの説明・メモ |
-| visitDate | string | × | 訪問日（YYYY-MM-DD） |
-| visitTime | string | × | 訪問時刻（HH:MM） |
+#### locations配列の要素
+| パラメータ | 型 | 必須 | 説明 | 例 |
+|-----------|----|------|------|-----|
+| order | integer | ○ | スポットの表示順 | 1 |
+| name | string | ○ | スポット名（最大255文字） | "京都駅" |
+| lat | numeric | × | 緯度 | 34.985849 |
+| lng | numeric | × | 経度 | 135.758766 |
+| description | string | × | スポットの説明・メモ | "集合場所" |
+| visitDate | string | ○ | 訪問日（YYYY-MM-DD） | "2024-10-15" |
+| visitTime | string | × | 訪問時刻（HH:MM） | "10:00" |
 
-**成功レスポンス**:
+---
+
+### レスポンス
+
+#### 成功レスポンス（201 Created）
 ```json
 {
     "success": true,
     "message": "Travel created successfully",
     "data": {
         "id": 1,
-        "title": "旅行タイトル",
+        "title": "京都の古都を巡る旅",
         "user_id": 1,
-        "travelSpots": [...],
-        "photos": [...],
-        "tags": [...]
+        "description": "京都の伝統的な寺院や庭園を訪れる旅",
+        "start_date": "2024-10-15",
+        "end_date": "2024-10-20",
+        "visibility": 1,
+        "location_category": 0,
+        "prefecture": 26,
+        "country": null,
+        "created_at": "2024-01-15T10:30:00.000000Z",
+        "updated_at": "2024-01-15T10:30:00.000000Z",
+        "travelSpots": [
+            {
+                "id": 1,
+                "travel_id": 1,
+                "day_number": null,
+                "visit_date": "2024-10-15",
+                "visit_time": "10:00",
+                "name": "京都駅",
+                "latitude": 34.985849,
+                "longitude": 135.758766,
+                "order_index": 1,
+                "memo": "集合場所"
+            }
+        ],
+        "photos": [
+            {
+                "id": 1,
+                "travel_id": 1,
+                "travel_spot_id": 1,
+                "url": "https://example.com/photo1.jpg",
+                "thumbnail_url": null,
+                "caption": null
+            }
+        ],
+        "tags": [
+            {
+                "id": 1,
+                "name": "京都"
+            }
+        ]
     }
 }
 ```
+
+#### エラーレスポンス
+
+**バリデーションエラー（422 Unprocessable Entity）**
+```json
+{
+    "success": false,
+    "message": "The given data was invalid.",
+    "errors": {
+        "title": ["The title field is required."],
+        "startDate": ["The start date field is required."],
+        "endDate": ["The end date must be a date after or equal to start date."],
+        "visibility": ["The visibility field is required."],
+        "locations.0.visitDate": ["The visit date field is required."],
+        "locations.0.name": ["The name field is required."]
+    }
+}
+```
+
+**認証エラー（401 Unauthorized）**
+```json
+{
+    "success": false,
+    "message": "Unauthorized"
+}
+```
+
+---
+
+### 注意事項
+
+- **認証**: 有効なClerk JWTトークンが必要です
+- **日付形式**: `YYYY-MM-DD` 形式で指定してください
+- **時刻形式**: `HH:MM` 形式で指定してください
+- **緯度経度**: 数値で指定してください（例：34.985849）
+- **定数値**: visibility、location_category、prefecture、countryは定数ファイルの値を使用してください
+- **画像URL**: 外部の有効なURLを指定してください
 
 ---
 

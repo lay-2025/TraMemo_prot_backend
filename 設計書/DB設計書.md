@@ -28,7 +28,7 @@
 | start_date      | DATE     | NULLABLE               | 開始日                                       |
 | end_date        | DATE     | NULLABLE               | 終了日                                       |
 | visibility      | INT      | NOT NULL               | 公開設定（0：private、1：public）            |
-| locationCategory| INT      | NOT NULL               | 場所カテゴリ（0：日本国内、1：海外）         |
+| location_category| INT      | NOT NULL               | 場所カテゴリ（0：日本国内、1：海外）         |
 | prefecture      | INT      | NULLABLE               | 都道府県No（例：1=北海道、2=青森県...）      |
 | country         | INT      | NULLABLE               | 国No（例：1=アメリカ合衆国、2=ドイツ...）    |
 | created_at      | TIMESTAMP|                        | 作成日時                                     |
