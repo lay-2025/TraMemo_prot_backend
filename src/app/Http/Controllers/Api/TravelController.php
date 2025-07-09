@@ -43,7 +43,7 @@ class TravelController extends Controller
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
             'visibility' => 'required|integer',
-            'location_category' => 'nullable|integer',
+            'locationCategory' => 'nullable|integer',
             'prefecture' => 'nullable|integer',
             'country' => 'nullable|integer',
             'tags' => 'array',

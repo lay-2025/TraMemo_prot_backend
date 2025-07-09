@@ -57,8 +57,10 @@ class TravelRepository implements TravelRepositoryInterface
             'description' => $data['description'] ?? null,
             'start_date' => $data['startDate'],
             'end_date' => $data['endDate'],
+            'visibility' => $data['visibility'] ?? 0,
+            'location_category' => $data['locationCategory'] ?? 0,
             'prefecture' => $data['prefecture'] ?? null,
-            'visibility' => $data['visibility'] ?? 'public',
+            'country' => $data['country'] ?? null,
         ]);
 
         foreach ($data['locations'] ?? [] as $i => $loc) {

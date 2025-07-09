@@ -244,7 +244,7 @@ POST /api/travels
 | startDate | string | ○ | 開始日（YYYY-MM-DD） | "2024-10-15" |
 | endDate | string | ○ | 終了日（YYYY-MM-DD、開始日以降） | "2024-10-20" |
 | visibility | integer | ○ | 公開設定（0：private、1：public） | 1 |
-| location_category | integer | × | 場所カテゴリ（0：日本国内、1：海外） | 0 |
+| locationCategory | integer | × | 場所カテゴリ（0：日本国内、1：海外） | 0 |
 | prefecture | integer | × | 都道府県No（定数ファイルに従う） | 26（京都府） |
 | country | integer | × | 国No（定数ファイルに従う） | null |
 | tags | array | × | タグ一覧（文字列配列） | ["京都", "紅葉"] |
