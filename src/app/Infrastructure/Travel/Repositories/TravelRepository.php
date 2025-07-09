@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Travel\Repositories;
 
-use App\Domain\Travel\Entities\Travel as TravelEntity;
+use App\Domain\Travel\Entities\TravelEntity;
 use App\Domain\Travel\Repositories\TravelRepositoryInterface;
 use App\Infrastructure\Travel\Models\Travel;
 use App\Infrastructure\Travel\Models\TravelSpot;
@@ -29,6 +29,10 @@ class TravelRepository implements TravelRepositoryInterface
             $travel->description,
             $travel->start_date,
             $travel->end_date,
+            $travel->visibility,
+            $travel->location_category,
+            $travel->prefecture,
+            $travel->country,
             $travel->travelSpots->toArray(),
             $travel->photos->toArray(),
             $travel->tags->toArray(),

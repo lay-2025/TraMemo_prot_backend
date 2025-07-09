@@ -39,8 +39,11 @@ class TravelController extends Controller
             'description' => 'nullable|string',
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
+            // フロントを変更必要
+            'visibility' => 'required|string|max:50',
+            'locationCategory' => 'required|string|max:50',
             'prefecture' => 'nullable|string|max:255',
-            'visibility' => 'nullable|string|max:50',
+            'country' => 'nullable|string|max:255',
             'tags' => 'array',
             'tags.*' => 'string|max:50',
             'locations' => 'array',
