@@ -36,7 +36,7 @@ Route::middleware(['clerk.auth'])->group(function () {
         return response()->json(['clerk_user_id' => $clerkUserId]);
     });
     // 他の認証必須API
-    Route::post('/travels/create', [\App\Http\Controllers\Api\TravelController::class, 'store']);
+    Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']);
 });
 
 Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 'show']);
