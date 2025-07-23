@@ -63,4 +63,12 @@ class HealthCheckController extends \App\Http\Controllers\Controller
             return response()->json(['auth' => 'ng'], 401);
         }
     }
+
+    // 6. バージョン情報の返却
+    public function version()
+    {
+        // APP_VERSION環境変数→config/app.php→unknown の順で取得
+        $version = env('APP_VERSION') ?? config('app.version') ?? 'unknown';
+        return response()->json(['version' => $version]);
+    }
 }
