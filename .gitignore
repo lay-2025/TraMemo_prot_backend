@@ -1,0 +1,19 @@
+# 設計書
+/設計書/backup/*
+/設計書/personal/*
+
+# Terraform state
+/infra/gcp/terraform/terraform.tfstate
+/infra/gcp/terraform/terraform.tfstate.*
+/infra/gcp/terraform/*.tfstate
+/infra/gcp/terraform/*.tfstate.*
+
+# Lock file
+/infra/gcp/terraform/.terraform.lock.hcl
+/infra/gcp/terraform/terraform.tfstate.lock.info
+
+# バイナリ
+/infra/gcp/terraform/.terraform/*
+
+# デプロイ用Dockerfile backup
+/infra/gcp/docker/backup/*
