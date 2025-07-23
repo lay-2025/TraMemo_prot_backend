@@ -1,0 +1,17 @@
+src/.git
+src/.gitignore
+src/README.md
+src/.env
+src/.env.local
+src/.env.production
+src/.env.prod
+src/node_modules
+src/vendor
+src/storage/logs/*
+src/storage/framework/cache/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*
+src/tests
+src/phpunit.xml
+.dockerignore
+docker-compose.yml
