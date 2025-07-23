@@ -35,6 +35,10 @@ Route::middleware(['clerk.auth'])->group(function () {
         // 必要に応じてusersテーブルから情報取得・返却
         return response()->json(['clerk_user_id' => $clerkUserId]);
     });
+
+    // health check
+    Route::get('/health/auth', [\App\Http\Controllers\Api\HealthCheckController::class, 'auth']);
+
     // 他の認証必須API
     Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']);
 });
@@ -44,3 +48,8 @@ Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 
 
 // webhook
 Route::post('/webhook/clerk', [\App\Http\Controllers\Api\WebhookController::class, 'handleClerk']);
+
+// health check
+Route::get('/health/app', [\App\Http\Controllers\Api\HealthCheckController::class, 'app']);
+Route::get('/health/db', [\App\Http\Controllers\Api\HealthCheckController::class, 'db']);
+Route::get('/health/env', [\App\Http\Controllers\Api\HealthCheckController::class, 'env']);
