@@ -125,5 +125,7 @@ https://docs.svix.com/receiving/verifying-payloads/how#php-laravel
 SvixSDKを利用
 
 
-
+■GCP　検証用アカウント
+メール：iki.engineer2025+gcp@gmail.com
+パス：mH3R9WwF
 

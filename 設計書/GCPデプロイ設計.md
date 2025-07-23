@@ -846,3 +846,227 @@ gcloud sql logs tail traMemo-db
 - [Laravel on Google Cloud](https://laravel.com/docs/10.x/deployment#google-cloud-run)
 
 --- 
+
+---
+
+## 14. サービス公開後のリソース消費と無料枠の許容範囲
+
+### 14.1 Cloud Run（APIサーバー）
+- **消費アクション例**
+  - APIエンドポイントへのリクエスト（Web/アプリ/外部サービスからのアクセス）
+  - バッチ処理やWebhook受信
+  - ヘルスチェックや監視ツールによる自動アクセス
+- **リソース消費内容**
+  - リクエスト数
+  - CPU/メモリ使用時間（リクエスト処理中のみ課金）
+  - アウトバウンド通信量（外部へのデータ送信）
+- **無料枠の許容範囲**
+  - 200万リクエスト/月
+  - 360,000 vCPU秒/月
+  - 180,000 GiB秒/月
+  - 2GBのアウトバウンド通信/月（北米・欧州宛て）
+
+---
+
+### 14.2 Cloud SQL（MySQL）
+- **消費アクション例**
+  - データの登録・更新・削除・検索（APIや管理画面、バッチ処理等）
+  - バックアップや自動メンテナンス
+  - 外部からのDB接続
+- **リソース消費内容**
+  - インスタンス稼働時間
+  - ストレージ使用量
+  - バックアップストレージ
+  - ネットワーク転送量（外部接続時）
+- **無料枠の許容範囲**
+  - db-f1-microインスタンス1台分の稼働（USリージョンのみ、asia-northeast1は課金対象の可能性あり）
+  - 30GBのストレージ（USリージョンのみ）
+  - 1GBのバックアップストレージ
+
+---
+
+### 14.3 Cloud Storage（画像・静的ファイル）
+- **消費アクション例**
+  - 画像やファイルのアップロード・ダウンロード・削除
+  - フロントエンド静的ファイルの配信
+  - バックアップやログの保存
+- **リソース消費内容**
+  - 保存容量
+  - オペレーション数（PUT/GET/DELETE等）
+  - アウトバウンド転送量
+- **無料枠の許容範囲**
+  - 5GBのストレージ
+  - 5,000回/月のClass Aオペレーション（アップロード等）
+  - 50,000回/月のClass Bオペレーション（ダウンロード等）
+  - 1GBのネットワーク転送（北米宛て）
+
+---
+
+### 14.4 Cloud CDN（フロント配信）
+- **消費アクション例**
+  - フロントエンドサイトへのアクセス
+  - 静的ファイルのキャッシュ・配信
+- **リソース消費内容**
+  - キャッシュヒット/ミス時の転送量
+  - キャッシュストレージ使用量
+  - リクエスト数
+- **無料枠の許容範囲**
+  - 1GB/月のキャッシュ転送量（北米・欧州宛て）
+  - 1,000,000リクエスト/月
+
+---
+
+### 14.5 その他（Secret Manager, Monitoring, Logging, IAM等）
+- **消費アクション例**
+  - シークレットの保存・取得
+  - ログ保存・監視データ送信
+- **リソース消費内容**
+  - シークレット数・取得回数
+  - ログ保存量・監視データ量
+- **無料枠の許容範囲**
+  - 各サービスごとに無料枠あり（詳細は公式ドキュメント参照）
+
+---
+
+### 14.6 無料枠を超過する主なアクション例
+- APIが大量に叩かれる（Bot/DoS/人気化）
+- 画像・動画など大容量ファイルの大量アップロード/ダウンロード
+- フロントエンドにアクセス集中
+- バックエンドでバッチ処理や定期ジョブが頻繁に動作
+- 外部サービス連携で大量のデータ送受信
+- Cloud SQLに大容量データが蓄積
+
+---
+
+### 14.7 運用上の注意・対策
+- コストアラート・モニタリングを必ず設定
+- Cloud Run最小インスタンス数0、最大数制限
+- Cloud Storageのライフサイクル・バージョニング無効化
+- Cloud SQLの自動停止・ストレージ最小化
+- CDNキャッシュ最適化・不要な転送抑制
+- 不要なリソースは即時削除
+
+---
+
+### 14.8 まとめ
+- 小規模なポートフォリオ・個人開発・検証用途なら、Cloud Run/Cloud SQL/Cloud Storage/Cloud CDNの無料枠内で月額ほぼ0円で運用可能。
+- アクセス増加や大量データ保存・配信が発生すると、各サービスの無料枠を超過し課金される。
+- Cloud SQLの無料枠はリージョン制限（USのみ）に注意。asia-northeast1では課金対象になる場合あり。
+
+---
+
+※最新の無料枠・料金体系は[Google Cloud公式ドキュメント](https://cloud.google.com/free)も参照してください。 
+
+---
+
+### 14.9 サービスアカウント設計
+
+#### サービスアカウントの役割
+- Cloud Run、Cloud Run Job、Cloud Functions等のGCPサービスがリソースへ安全にアクセスするための「実行主体」として利用します。
+- 本番運用では、用途ごとに専用のサービスアカウントを作成し、必要最小限の権限のみを付与するのがベストプラクティスです。
+
+#### 作成・命名例
+- 例: `tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com`
+
+#### 必要な権限（ロール）
+| ロール名 | 用途・役割 |
+|----------|------------|
+| roles/cloudsql.client | Cloud SQLへの接続 |
+| roles/secretmanager.secretAccessor | Secret Managerの値参照 |
+| roles/storage.objectViewer | Cloud Storageのオブジェクト参照（画像等の読み取り） |
+| roles/storage.objectCreator | Cloud Storageへの書き込み（画像アップロード等が必要な場合） |
+| roles/logging.logWriter | Cloud Loggingへの書き込み（必要に応じて） |
+
+#### サービスアカウントの作成・権限付与例
+```bash
+# サービスアカウント作成
+ gcloud iam service-accounts create tramemo-app --display-name="TraMemo App Service Account"
+
+# 権限付与
+ gcloud projects add-iam-policy-binding <PROJECT_ID> \
+   --member="serviceAccount:tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com" \
+   --role="roles/cloudsql.client"
+ gcloud projects add-iam-policy-binding <PROJECT_ID> \
+   --member="serviceAccount:tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com" \
+   --role="roles/secretmanager.secretAccessor"
+ gcloud projects add-iam-policy-binding <PROJECT_ID> \
+   --member="serviceAccount:tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com" \
+   --role="roles/storage.objectViewer"
+ # 書き込みも必要な場合
+ gcloud projects add-iam-policy-binding <PROJECT_ID> \
+   --member="serviceAccount:tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com" \
+   --role="roles/storage.objectCreator"
+ # Cloud Loggingも必要な場合
+ gcloud projects add-iam-policy-binding <PROJECT_ID> \
+   --member="serviceAccount:tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com" \
+   --role="roles/logging.logWriter"
+```
+
+#### Cloud Run/Jobへの紐付け例
+- Cloud RunやJobのデプロイ時に `--service-account=tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com` を指定してください。
+
+```bash
+gcloud run deploy traMemo-api \
+  ... \
+  --service-account=tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com
+
+gcloud run jobs create migrate \
+  ... \
+  --service-account=tramemo-app@<PROJECT_ID>.iam.gserviceaccount.com
+```
+
+#### セキュリティ・運用上の注意
+- サービスアカウントのキー（JSON）は原則不要です（gcloudやTerraform等の自動化用には必要な場合あり）。
+- 最小権限の原則を守り、不要なロールは付与しない。
+- サービスアカウントの利用状況を定期的に監査する。
+
+--- 
+
+---
+
+## 15. GCPで管理するLaravel環境変数の整理（リファクタ・追加版）
+
+### 15.1 Cloud Runの環境変数で管理する値
+| 変数名                        | 用途・役割                        | 取得・設定方法例                                      |
+|-------------------------------|------------------------------------|------------------------------------------------------|
+| APP_ENV                       | 環境名（例: production）           | 固定値 "production"                                  |
+| APP_URL                       | サイトのURL                        | 公開URLを指定                                        |
+| DB_HOST                       | Cloud SQLのUNIXソケット接続名      | `/cloudsql/プロジェクトID:リージョン:DB名` 形式       |
+| DB_DATABASE                   | DB名                               | Cloud SQL作成時の値                                  |
+| DB_USERNAME                   | DBユーザー名                       | Cloud SQL作成時の値                                  |
+| GOOGLE_CLOUD_PROJECT_ID       | GCPプロジェクトID                  | `gcloud config get-value project` で取得             |
+| GOOGLE_CLOUD_STORAGE_BUCKET   | Cloud Storageバケット名            | GCPコンソールで確認                                  |
+| GOOGLE_CLOUD_STORAGE_URL      | バケットの公開URL                  | `https://storage.googleapis.com/<バケット名>`         |
+| CLERK_PUBLISHABLE_KEY         | Clerk公開キー                      | Clerk管理画面で取得                                  |
+| CLERK_AUTHORIZED_PARTY        | Clerk認証パーティ                  | Clerk管理画面で取得                                  |
+| CACHE_DRIVER, SESSION_DRIVER  | キャッシュ/セッション設定          | 必要に応じて指定                                     |
+| QUEUE_CONNECTION              | キュー接続設定                     | 必要に応じて指定                                     |
+| MAIL_MAILER, MAIL_HOST, ...   | メール送信設定                     | 必要に応じて指定                                     |
+| LOG_CHANNEL, LOG_LEVEL        | ログ出力設定                       | 必要に応じて指定                                     |
+| SANCTUM_STATEFUL_DOMAINS      | Sanctum用ドメイン設定              | 必要に応じて指定                                     |
+
+### 15.2 Secret Managerで管理しCloud Runにマウントする値（機密情報）
+| 変数名                     | 用途・役割              | 取得・設定方法例                        |
+|----------------------------|------------------------|----------------------------------------|
+| APP_KEY                    | Laravel暗号化キー      | `php artisan key:generate --show`      |
+| DB_PASSWORD                | DBパスワード           | Cloud SQL作成時の値                    |
+| CLERK_SECRET_KEY           | Clerkシークレットキー  | Clerk管理画面で取得                    |
+| CLERK_WEBHOOK_SIGNING_SECRET| Clerk Webhook署名検証用| Clerk管理画面で取得                    |
+| AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION | AWS連携用 | 必要に応じて指定                      |
+| その他APIキー等            | 外部APIやメール等      | 各サービス管理画面で取得                |
+
+### 15.3 Cloud Run/Secret Managerでの設定例
+- Cloud Runの環境変数は `gcloud run deploy` の `--set-env-vars` で指定
+- Secret Managerの値はGCPコンソールまたは `gcloud secrets create` で登録し、Cloud Runの「シークレット」機能で環境変数やファイルとしてマウント
+- Laravelは `env()` でこれらの値を直接参照可能
+
+#### 例: gcloud run deploy
+```bash
+gcloud run deploy traMemo-api \
+  --image gcr.io/traMemo-project-xxxxx/traMemo-api:latest \
+  --region asia-northeast1 \
+  --set-env-vars="APP_ENV=production,APP_URL=https://traMemo-api-xxxxx-ew.a.run.app,DB_HOST=/cloudsql/traMemo-project-xxxxx:asia-northeast1:traMemo-db,DB_DATABASE=traMemo_production,DB_USERNAME=traMemo_user,GOOGLE_CLOUD_PROJECT_ID=traMemo-project-xxxxx,GOOGLE_CLOUD_STORAGE_BUCKET=traMemo-images,GOOGLE_CLOUD_STORAGE_URL=https://storage.googleapis.com/traMemo-images,CLERK_PUBLISHABLE_KEY=pk_test_xxx" \
+  --set-secrets="APP_KEY=app-key:latest,DB_PASSWORD=db-password:latest,CLERK_SECRET_KEY=clerk-secret-key:latest"
+```
+
+--- 
