@@ -16,9 +16,11 @@ Travel Memory（TraMemo）は、旅行記録を地図と写真で管理・共有
 ---
 
 ## 技術スタック
-- **フロントエンド**: React 18, Vite, TypeScript, TailwindCSS, React Router, Axios, React Query, React Hook Form, Leaflet/Google Maps
-- **バックエンド**: Laravel 12, PHP 8.1, MySQL 8.0, Laravel Sanctum, Laravel Socialite, Laravel Excel, Intervention Image, Guzzle HTTP
-- **インフラ・外部サービス**: GCP（Cloud Run, Cloud SQL, Cloud Storage, Cloud CDN, Secret Manager, Cloud Monitoring/Logging）, Google Maps API, OpenAI API, Clerk
+- **フロントエンド**: React 18, Vite, TypeScript, TailwindCSS, shadcn/ui
+- **バックエンド**: Laravel 12, PHP 8.1, MySQL 8.0
+- **インフラ**: GCP（Cloud Run, Cloud SQL, Cloud Storage, Cloud CDN, Secret Manager, Cloud Monitoring/Logging）
+- **インフラ・外部サービス**: Google Maps API, OpenAI API, Clerk
+- **AI駆動開発**: Cursor（コーディング・設計支援）, GitHub Copilot（コーディング支援）, V0（UIデザイン支援）
 
 ---
 
@@ -60,6 +62,8 @@ graph TD
 ---
 
 ## ディレクトリ構成
+
+### バックエンド（Laravel）
 ```
 TraMemo_prot_backend/
 ├── src/                    # Laravelアプリケーション
@@ -72,10 +76,28 @@ TraMemo_prot_backend/
 └── 設計書/                 # 設計ドキュメント
 ```
 
+### フロントエンド（React）
+```
+TraMemo_prot_frontend/
+├── src/                    # Reactアプリケーション
+│   ├── api/               # API通信関連
+│   ├── components/        # 再利用可能なコンポーネント
+│   │   └── ui/           # shadcn/ui基本コンポーネント
+│   ├── constants/         # 定数定義（都道府県、国名など）
+│   ├── lib/              # ユーティリティ関数
+│   ├── pages/            # ページコンポーネント
+│   └── assets/           # 静的ファイル（画像など）
+├── infra/
+│   └── gcp_front/        # フロントエンド用GCP設定
+│       └── docker/       # Docker設定（Nginx + React）
+└── public/               # 公開ファイル
+
+```
+
 ---
 
 ## 設計ドキュメント
-詳細な設計・仕様については[設計書フォルダ](./設計書/)を参照してください。
+詳細な設計・仕様については[設計書フォルダ](https://github.com/lay-2025/TraMemo_prot_backend/tree/main/設計書/)を参照してください。
 
 ### 設計種別分類例
 
