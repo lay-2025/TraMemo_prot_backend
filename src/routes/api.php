@@ -7,27 +7,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-// API test
-// Route::get('/list', function () {
-//     info('backend call api');
-//     return response(
-//         [
-//             'users' => [
-//                 [
-//                     'id' => '1',
-//                     'name' => 'ほげほげ太郎1',
-//                     'role' => 'user'
-//                 ],
-//                 [
-//                     'id' => '2',
-//                     'name' => 'ほげほげ太郎2',
-//                     'role' => 'user'
-//                 ],
-//             ]
-//         ]
-//     );
-// });
-
 Route::middleware(['clerk.auth'])->group(function () {
     Route::get('/user', function (Request $request) {
         // ClerkユーザーIDを取得
@@ -35,12 +14,22 @@ Route::middleware(['clerk.auth'])->group(function () {
         // 必要に応じてusersテーブルから情報取得・返却
         return response()->json(['clerk_user_id' => $clerkUserId]);
     });
+
+    // health check
+    Route::get('/health/auth', [\App\Http\Controllers\Api\HealthCheckController::class, 'auth']);
+
     // 他の認証必須API
-    Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']);
+    // Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']); // 本番環境でのユーザ認証機能が上手く動作しないため、一時的にコメントアウト
 });
 
 Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 'show']);
-// Route::post('/travels/create', [\App\Http\Controllers\Api\TravelController::class, 'store']);
+Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']);
 
 // webhook
 Route::post('/webhook/clerk', [\App\Http\Controllers\Api\WebhookController::class, 'handleClerk']);
+
+// health check
+Route::get('/health/app', [\App\Http\Controllers\Api\HealthCheckController::class, 'app']);
+// Route::get('/health/db', [\App\Http\Controllers\Api\HealthCheckController::class, 'db']);
+Route::get('/health/env', [\App\Http\Controllers\Api\HealthCheckController::class, 'env']);
+Route::get('/health/version', [\App\Http\Controllers\Api\HealthCheckController::class, 'version']);
