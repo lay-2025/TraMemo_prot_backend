@@ -37,21 +37,21 @@ class HealthCheckController extends \App\Http\Controllers\Controller
     // }
 
     // 4. 環境変数・設定値の存在確認（本番環境が安定したら削除）
-    public function env()
-    {
-        $required_env = ['APP_KEY', 'DB_CONNECTION', 'DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'];
-        $missing = [];
-        foreach ($required_env as $env) {
-            if (empty(env($env))) {
-                $missing[] = $env;
-            }
-        }
-        if (empty($missing)) {
-            return response()->json(['env' => 'ok']);
-        } else {
-            return response()->json(['env' => 'ng', 'missing' => $missing], 500);
-        }
-    }
+    // public function env()
+    // {
+    //     $required_env = ['DB_CONNECTION', 'DB_HOST', 'DB_DATABASE', 'DB_USERNAME'];
+    //     $missing = [];
+    //     foreach ($required_env as $env) {
+    //         if (empty(env($env))) {
+    //             $missing[] = $env;
+    //         }
+    //     }
+    //     if (empty($missing)) {
+    //         return response()->json(['env' => 'ok']);
+    //     } else {
+    //         return response()->json(['env' => 'ng', 'missing' => $missing], 500);
+    //     }
+    // }
 
     // 5. 認証確認
     public function auth(Request $request)

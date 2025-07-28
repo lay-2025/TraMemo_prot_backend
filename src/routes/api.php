@@ -30,6 +30,6 @@ Route::post('/webhook/clerk', [\App\Http\Controllers\Api\WebhookController::clas
 
 // health check
 Route::get('/health/app', [\App\Http\Controllers\Api\HealthCheckController::class, 'app']);
-Route::get('/health/db', [\App\Http\Controllers\Api\HealthCheckController::class, 'db']);
+// Route::get('/health/db', [\App\Http\Controllers\Api\HealthCheckController::class, 'db']);
 Route::get('/health/env', [\App\Http\Controllers\Api\HealthCheckController::class, 'env']);
 Route::get('/health/version', [\App\Http\Controllers\Api\HealthCheckController::class, 'version']);
