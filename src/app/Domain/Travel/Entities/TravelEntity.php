@@ -21,5 +21,7 @@ class TravelEntity
         public array $user = [],
         public array $comments = [],
         public array $likes = [],
+        public ?string $createdAt = null,
+        public ?string $updatedAt = null,
     ) {}
 }

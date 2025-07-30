@@ -22,6 +22,8 @@ Route::middleware(['clerk.auth'])->group(function () {
     // Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']); // 本番環境でのユーザ認証機能が上手く動作しないため、一時的にコメントアウト
 });
 
+// 旅行記録関連API（認証不要）
+Route::get('/travels', [\App\Http\Controllers\Api\TravelController::class, 'index']);
 Route::get('/travels/{id}', [\App\Http\Controllers\Api\TravelController::class, 'show']);
 Route::post('/travels', [\App\Http\Controllers\Api\TravelController::class, 'store']);
 
